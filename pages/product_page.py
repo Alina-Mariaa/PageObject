@@ -1,5 +1,7 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
+from selenium.common.exceptions import NoAlertPresentException
+
 
 class ProductPage(BasePage):
     def should_see_button(self):
@@ -8,6 +10,24 @@ class ProductPage(BasePage):
     def should_be_add_to_basket(self):
         add_to_basket_button = self.browser.find_element(*ProductPageLocators.BUTTON_ADD_TO_BASKET)
         add_to_basket_button.click()
+#        alert = self.browser.switch_to.alert
+#        alert.accept()
+
+
+    def solve_quiz_and_get_code(self):
+#        alert = self.browser.switch_to.alert
+#        x = alert.text.split(" ")[2]
+#        answer = str(math.log(abs((12 * math.sin(float(x))))))
+#        alert.send_keys(answer)
+#        alert.accept()
+        try:
+            alert = self.browser.switch_to.alert
+            print("Your code: {}".format(alert.text))
+            alert.accept()
+
+        except NoAlertPresentException:
+            print("No second alert presented")
+
 
     def should_be_message_about_adding(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), (
@@ -16,7 +36,7 @@ class ProductPage(BasePage):
             "Message about adding is not presented")
         product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
         message = self.browser.find_element(*ProductPageLocators.MESSAGE_ABOUT_ADDING).text
-        assert product_name in message, "No product name in the message"
+        assert product_name == message, "No product name in the message"
 
     def should_be_message_basket_total(self):
         assert self.is_element_present(*ProductPageLocators.MESSAGE_BASKET_TOTAL), (
@@ -25,5 +45,12 @@ class ProductPage(BasePage):
             "Product price is not presented")
         message_basket_total = self.browser.find_element(*ProductPageLocators.MESSAGE_BASKET_TOTAL).text
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
-        assert product_price in message_basket_total, "No product price in the message"
+        assert product_price == message_basket_total, "No product price in the message"
 
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE_ABOUT_ADDING),(
+            "Success message is presented, but should not be")
+
+    def should_not_be_success_message1(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE_ABOUT_ADDING), \
+            "Success message is not presented, but should be"
