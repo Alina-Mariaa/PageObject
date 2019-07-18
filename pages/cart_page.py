@@ -1,26 +1,15 @@
-from selenium.common.exceptions import (NoSuchElementException)
+from .locators import BasePageLocators
+from .locators import BasketPageLocators
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (NoSuchElementException)
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from .locators import BasePageLocators
 
-
-
-class BasePage(object):
+class CartPage(object):
     def __init__(self, browser, url, timeout=30):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
-
-    def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
-        link.click()
-
-
-    def go_to_basket_page(self):
-        link_to_basket = self.browser.find_element(*BasePageLocators.BASKET_BUTTON)
-        link_to_basket.click()
-
 
     def is_not_element_present(self, how, what, timeout=4):
         try:
@@ -36,12 +25,10 @@ class BasePage(object):
             return False
         return True
 
-    def open(self):
-        self.browser.get(self.url)
+    def should_not_be_product_in_basket(self):
+        assert self.is_not_element_present(*BasketPageLocators.PRODUCT_IN_BASKET), "Basket is empty"
 
-    def should_be_login_link(self):
-        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
-
-
-
-
+    def should_be_message_basket_is_empty(self):
+#        assert self.is_element_present(*BasketPageLocators.MESSAGE_BASKET_EMPTY), "Basket is not empty"
+        message_basket_empty = self.browser.find_element(*BasketPageLocators.MESSAGE_BASKET_EMPTY).text
+        assert "Your basket is empty" in message_basket_empty, "Basket is not empty"
