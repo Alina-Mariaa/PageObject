@@ -3,7 +3,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .locators import BasePageLocators
-
+from .locators import LoginPageLocators
 
 
 class BasePage(object):
@@ -42,6 +42,7 @@ class BasePage(object):
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
-
-
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*LoginPageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
 

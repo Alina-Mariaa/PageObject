@@ -8,6 +8,7 @@ class BasePageLocators(object):
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
     BASKET_BUTTON = (By.CSS_SELECTOR, ".btn-group")
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 class BasketPageLocators(object):
     PRODUCT_IN_BASKET = (By.CSS_SELECTOR, ".basket-items")
@@ -19,6 +20,8 @@ class LoginPageLocators(object):
     EMAIL_FIELED = (By.CSS_SELECTOR, "#id_registration-email")
     PASSWORD1_FIELED = (By.CSS_SELECTOR, "#id_registration-password1")
     PASSWORD2_FIELED = (By.CSS_SELECTOR, "#id_registration-password2")
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, "[name='registration_submit']")
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 
 class ProductPageLocators(object):
